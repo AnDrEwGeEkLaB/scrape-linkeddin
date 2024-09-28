@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.7",
+    "puppeteer": "^23.4.1",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.3",
+    "typescript": "^5.6.2"
+  }
+}
