@@ -11,7 +11,6 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 RUN npm install
-RUN npm run build
 COPY . .
 RUN 
 CMD [ "npm", "start" ]
