@@ -10,9 +10,8 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
-RUN npm install -g yarn
-RUN yarn
-RUN yarn build
+RUN npm install
+RUN npm run build
 COPY . .
 RUN 
-CMD [ "yarn", "start" ]
+CMD [ "npm", "start" ]
