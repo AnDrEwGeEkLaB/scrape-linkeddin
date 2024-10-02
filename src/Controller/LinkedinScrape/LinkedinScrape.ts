@@ -34,7 +34,7 @@ export default class LinkedinScrapeController {
         return cookies;
     }
 
-    async postJob(account_id: string, details: any): Promise<string> {
+    async postJob(details: any): Promise<string> {
         const linkedinAccountCookiesService = new LinkedinAccountCookiesService();
 
         const getAccountCookies = await linkedinAccountCookiesService.getFreeAccount();
@@ -46,7 +46,7 @@ export default class LinkedinScrapeController {
             await this.linkedinScrapeService.loadCookies(getAccountCookies.cookies || []);
             const checkProfile = await this.linkedinScrapeService.checkProfile();
             if (checkProfile === "https://www.linkedin.com/in/?_l=en_US") {
-                const newCookies = await this.updateAccountCookies(account_id, getAccountCookies.email, getAccountCookies.password);
+                const newCookies = await this.updateAccountCookies(getAccountCookies._id, getAccountCookies.email, getAccountCookies.password);
                 await this.linkedinScrapeService.loadCookies(newCookies);
 
             }

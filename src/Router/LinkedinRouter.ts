@@ -18,9 +18,9 @@ LinkedinRouter.post("/generate-new-account", async (req: Request, res: Response)
 
 LinkedinRouter.post("/post-job", async (req: Request, res: Response) => {
     try {
-        const { account_id, details } = req.body;
+        const { details } = req.body;
         const linkedinScrapeController = new LinkedinScrapeController();
-        const response = await linkedinScrapeController.postJob(account_id, details);
+        const response = await linkedinScrapeController.postJob( details);
         res.status(200).json("Job Posted Successfully");
         return;
     } catch (error) {
