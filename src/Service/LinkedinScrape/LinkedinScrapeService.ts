@@ -12,7 +12,7 @@ export default class LinkedInScraperService {
 
     async launchBrowser(): Promise<void> {
         this.browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
         this.page = await this.browser.newPage();
@@ -33,7 +33,8 @@ export default class LinkedInScraperService {
         await this.page.type('#password', password, { delay: 100 });
         // Click login and wait for navigation
         await this.page.click('[type="submit"]');
-        await this.page.waitForNavigation({ timeout: 600000 })
+        console.log("Clicked on submit button");
+        await delay(5000);
         console.log('Successfully logged in to LinkedIn!');
     }
     // Save cookies to a file
@@ -53,8 +54,7 @@ export default class LinkedInScraperService {
     async checkProfile(): Promise<string> {
         if (!this.page) throw new Error('Browser has not been launched.');
         await this.page.goto('https://www.linkedin.com/in/');
-        //await this.page.waitForNavigation({ timeout: 600000 })
-        //await this.page.type('#username', user_name);
+        await delay(5000);
         const url = this.page.url();
         console.log('Navigated to LinkedIn profile page', url);
         return url;
