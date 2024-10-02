@@ -8,6 +8,7 @@ const LinkedinAccountCookiesSchema = new Schema<ILinkedinAccountCookiesModel>({
     password: {
         type: String,
     },
+    isBusy: { type: Boolean, default: false },
 
 });
 

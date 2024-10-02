@@ -18,6 +18,7 @@ export default class LinkedinScrapeController {
             cookies: cookies,
             email: linkedinAccount.email,
             password: linkedinAccount.password,
+            isBusy: false
         };
         const result = await linkedinAccountCookiesService.saveCookies(account);
         return result;
@@ -36,11 +37,10 @@ export default class LinkedinScrapeController {
     async postJob(account_id: string, details: any): Promise<string> {
         const linkedinAccountCookiesService = new LinkedinAccountCookiesService();
 
-        const getAccountCookies = await linkedinAccountCookiesService.getCookies(account_id);
+        const getAccountCookies = await linkedinAccountCookiesService.getFreeAccount();
         await this.linkedinScrapeService.launchBrowser();
         if (!getAccountCookies) {
-            // login and save cookies   
-            return "Account Not Found";
+            return "No Account Available";
         } else {
 
             await this.linkedinScrapeService.loadCookies(getAccountCookies.cookies || []);
@@ -61,7 +61,8 @@ export default class LinkedinScrapeController {
                     details.questions
                 );
                 await this.linkedinScrapeService.closeBrowser();
-                return "Job Posted Successfully";
+                await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
+                return getAccountCookies._id;
             }
             else {
                 console.log("First Form");
@@ -73,7 +74,8 @@ export default class LinkedinScrapeController {
                     details.questions
                 );
                 await this.linkedinScrapeService.closeBrowser();
-                return "Job Posted Successfully";
+                await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
+                return getAccountCookies._id;
             }
         }
     }

@@ -20,6 +20,14 @@ export default class LinkedinAccountCookiesService implements ILinkedinAccountCo
     }
 
     async updateCookies(_id: string, cookies: Cookie[]): Promise<ILinkedinAccountCookiesModel | null> {
-        return await LinkedinAccountCookiesModel.findByIdAndUpdate(_id, {cookies}, { new: true });
+        return await LinkedinAccountCookiesModel.findByIdAndUpdate(_id, { cookies }, { new: true });
+    }
+
+    async getFreeAccount(): Promise<ILinkedinAccountCookiesModel & { _id: string } | null> {
+        return await LinkedinAccountCookiesModel.findOne({ isBusy: false });
+    }
+
+    async updateBusyAccount(_id: string, isBusy: boolean): Promise<ILinkedinAccountCookiesModel | null> {
+        return await LinkedinAccountCookiesModel.findByIdAndUpdate(_id, { isBusy }, { new: true });
     }
 }
