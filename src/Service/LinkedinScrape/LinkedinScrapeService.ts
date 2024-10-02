@@ -34,6 +34,7 @@ export default class LinkedInScraperService {
         // Click login and wait for navigation
         await this.page.click('[type="submit"]');
         console.log("Clicked on submit button");
+        await this.page.waitForNavigation({ timeout: 600000 });
         await delay(5000);
         console.log('Successfully logged in to LinkedIn!');
     }
@@ -54,7 +55,7 @@ export default class LinkedInScraperService {
     async checkProfile(): Promise<string> {
         if (!this.page) throw new Error('Browser has not been launched.');
         await this.page.goto('https://www.linkedin.com/in/');
-        await delay(5000);
+        await delay(10000);
         const url = this.page.url();
         console.log('Navigated to LinkedIn profile page', url);
         return url;
