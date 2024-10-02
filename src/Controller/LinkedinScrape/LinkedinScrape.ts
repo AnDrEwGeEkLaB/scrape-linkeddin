@@ -38,6 +38,7 @@ export default class LinkedinScrapeController {
         const linkedinAccountCookiesService = new LinkedinAccountCookiesService();
 
         const getAccountCookies = await linkedinAccountCookiesService.getFreeAccount();
+        console.log(getAccountCookies);
         await this.linkedinScrapeService.launchBrowser();
         if (!getAccountCookies) {
             return "No Account Available";

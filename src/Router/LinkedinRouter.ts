@@ -20,8 +20,8 @@ LinkedinRouter.post("/post-job", async (req: Request, res: Response) => {
     try {
         const { details } = req.body;
         const linkedinScrapeController = new LinkedinScrapeController();
-        const response = await linkedinScrapeController.postJob( details);
-        res.status(200).json("Job Posted Successfully");
+        const response = await linkedinScrapeController.postJob(details);
+        res.status(200).json(response);
         return;
     } catch (error) {
         res.status(403).json(error);
