@@ -153,20 +153,21 @@ export default class LinkedInScraperService {
 
     async postJobSecondForm(job_title: string, contract_type: number, skills: string[], description: string, questions: Array<any>): Promise<string> {
         if (!this.page) throw new Error('Browser has not been launched.');
-
-        await this.page.click('.artdeco-typeahead__input'); // Focus on the input field
-
+        console.log("Enter HERE");
+        await this.page.click('.artdeco-typeahead__input.job-posting-shared-job-title-typeahead__input-v2'); // Focus on the input field
+        console.log("HERE");
         await this.page.keyboard.down('Control')
         await this.page.keyboard.press('A');
         await this.page.keyboard.up('Control');
         await this.page.keyboard.press('Backspace');
-        await this.page.type('.artdeco-typeahead__input[placeholder="Add the title you are hiring for"]', job_title, { delay: 100 });
+        console.log("HERE", { job_title });
+        await this.page.keyboard.type(job_title, { delay: 100 });
         await delay(2000);
         await this.page.keyboard.press('ArrowDown');
         await delay(2000);
         await this.page.keyboard.press('Enter');
         await delay(2000);
-
+        console.log("Job title successfully selected");
         await this.page.evaluate(() => {
             Array.from(
                 document.querySelectorAll("button .artdeco-button__text")).forEach((submitButton) => {
