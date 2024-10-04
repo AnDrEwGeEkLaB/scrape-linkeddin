@@ -190,7 +190,7 @@ export default class LinkedInScraperService {
         await this.page.keyboard.up('Control');
         await this.page.keyboard.press('Backspace');
         await delay(1000);
-        await this.page.keyboard.type('Geek Labs Holdings', { delay: 500 });
+        await this.page.keyboard.type('Andrew Inovation', { delay: 500 });
         console.log(`the felid of com name has been input`)
         /////
 
