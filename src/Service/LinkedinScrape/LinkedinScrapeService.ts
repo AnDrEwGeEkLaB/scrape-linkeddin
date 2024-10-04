@@ -27,6 +27,7 @@ export default class LinkedInScraperService {
             waitUntil: "domcontentloaded",
         });
         // Log in to LinkedIn
+        await delay(5000);
         console.log('Navigating to LinkedIn login page...');
         // Type email and password
         await this.page.type('#username', email, { delay: 100 });
@@ -181,31 +182,30 @@ export default class LinkedInScraperService {
         await this.page.waitForNavigation({ timeout: 600000 })
 
 
-        await this.page.click('.artdeco-typeahead__input.job-posting-shared-company-typeahead__input'); // Company name
+        const jobDetails = await this.page.$$('.artdeco-typeahead__input');
+        await delay(1000);
+        jobDetails[1].focus();
         await this.page.keyboard.down('Control');
         await this.page.keyboard.press('A');
         await this.page.keyboard.up('Control');
         await this.page.keyboard.press('Backspace');
-        await this.page.type('.artdeco-typeahead__input.job-posting-shared-company-typeahead__input', 'orientation code', { delay: 100 });
+        await delay(1000);
+        await this.page.keyboard.type('Geek Labs Holdings', { delay: 500 });
         console.log(`the felid of com name has been input`)
         /////
 
-        await this.page.click('.artdeco-dropdown.artdeco-dropdown--placement-bottom.artdeco-dropdown--justification-left.ember-view', { delay: 100 }); // Workplace type
         await delay(2000);
         await this.page.keyboard.press('ArrowDown', { delay: 1000 });
         await this.page.keyboard.press('Enter');
         console.log(`Workplace type selected`)
         /////
-        const jobLocation = await this.page.click('.artdeco-typeahead__input[placeholder=""]')
-        await this.page.click('.artdeco-typeahead__input[placeholder=""]'); // Job location
-        await this.page.click('.artdeco-typeahead__input[placeholder=""]', { delay: 1000 }); // Job location
-        await delay(2000);
+        jobDetails[2].focus();
         await this.page.keyboard.down('Control');
         await this.page.keyboard.press('A');
         await this.page.keyboard.up('Control');
         await this.page.keyboard.press('Backspace',);
-        await delay(1000);
-        await this.page.type('.artdeco-typeahead__input[placeholder=""]', "Maadi");
+        await delay(2000);
+        await this.page.keyboard.type("Maadi", { delay: 500 });
         await delay(1000);
         await this.page.keyboard.press('ArrowDown');
         await delay(1000);

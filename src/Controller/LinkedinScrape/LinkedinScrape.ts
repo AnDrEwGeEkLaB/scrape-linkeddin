@@ -46,10 +46,11 @@ export default class LinkedinScrapeController {
 
             await this.linkedinScrapeService.loadCookies(getAccountCookies.cookies || []);
             const checkProfile = await this.linkedinScrapeService.checkProfile();
-            if (checkProfile === "https://www.linkedin.com/in/?_l=en_US") {
+            const profileUrlPattern = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+
+            if (!profileUrlPattern.test(checkProfile)) {
                 const newCookies = await this.updateAccountCookies(getAccountCookies._id, getAccountCookies.email, getAccountCookies.password);
                 await this.linkedinScrapeService.loadCookies(newCookies);
-
             }
             const checkWhichForm = await this.linkedinScrapeService.checkWhichForm();
             if (checkWhichForm === "Second_Form") {
