@@ -1,5 +1,4 @@
 import puppeteer, { Browser, Cookie, KeyInput, Page } from "puppeteer";
-
 const delay = async (time: number) => {
     return new Promise(function (resolve) {
         setTimeout(resolve, time)
@@ -9,11 +8,16 @@ const delay = async (time: number) => {
 export default class LinkedInScraperService {
     private browser: Browser | null = null;
     private page: Page | null = null;
-
     async launchBrowser(): Promise<void> {
         this.browser = await puppeteer.launch({
             headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            args: [
+                '--disable-http2',
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--enable-features=NetworkService,NetworkServiceInProcess',
+            ],
+            defaultViewport: { width: 1920, height: 1080 }
         });
         this.page = await this.browser.newPage();
         this.page.setDefaultTimeout(400 * 1000);
@@ -35,8 +39,7 @@ export default class LinkedInScraperService {
         // Click login and wait for navigation
         await this.page.click('[type="submit"]');
         console.log("Clicked on submit button");
-        await this.page.waitForNavigation({ timeout: 600000 });
-        await delay(5000);
+        await delay(15000);
         console.log('Successfully logged in to LinkedIn!');
     }
     // Save cookies to a file
@@ -48,15 +51,18 @@ export default class LinkedInScraperService {
     // Load cookies from a file, if they exist
     async loadCookies(cookies: Cookie[]): Promise<void> {
         if (this.page) {
+            await this.page.goto('https://www.linkedin.com', { waitUntil: 'domcontentloaded' });
             await this.page.setCookie(...cookies);
+            await delay(10000);
             console.log('Cookies set successfully');
         }
     }
     // Navigate to a specific LinkedIn page using saved cookies
     async checkProfile(): Promise<string> {
         if (!this.page) throw new Error('Browser has not been launched.');
+        console.log("Enter Here")
         await this.page.goto('https://www.linkedin.com/in/');
-        await delay(10000);
+        await delay(5000);
         const url = this.page.url();
         console.log('Navigated to LinkedIn profile page', url);
         return url;
@@ -101,7 +107,7 @@ export default class LinkedInScraperService {
             await this.page.keyboard.press('A');
             await this.page.keyboard.up('Control');
             await this.page.keyboard.press('Backspace');
-            await this.page.type('.artdeco-typeahead__input.job-posting-shared-company-typeahead__input', 'orientation code', { delay: 100 });
+            await this.page.type('.artdeco-typeahead__input.job-posting-shared-company-typeahead__input', 'Geek Labs Holdings', { delay: 100 });
             console.log(`the felid of com name has been input`)
             /////
 
@@ -190,7 +196,7 @@ export default class LinkedInScraperService {
         await this.page.keyboard.up('Control');
         await this.page.keyboard.press('Backspace');
         await delay(1000);
-        await this.page.keyboard.type('Andrew Inovation', { delay: 500 });
+        await this.page.keyboard.type('Geek Labs Holdings ', { delay: 500 });
         console.log(`the felid of com name has been input`)
         /////
 
@@ -387,6 +393,8 @@ export default class LinkedInScraperService {
         console.log("==================> End of Questions");
         return;
     }
+
+
 
     async closeBrowser(): Promise<void> {
         console.log("Close Browser");

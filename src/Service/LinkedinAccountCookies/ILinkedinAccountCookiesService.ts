@@ -7,4 +7,5 @@ export default interface ILinkedinAccountCookiesService {
     updateCookies(_id: string, cookies: Cookie[]): Promise<ILinkedinAccountCookiesModel | null>;
     getFreeAccount(): Promise<ILinkedinAccountCookiesModel & { _id: string } | null>;
     updateBusyAccount(_id: string, isBusy: boolean): Promise<ILinkedinAccountCookiesModel | null>
+    getBusyAccount(): Promise<Array<ILinkedinAccountCookiesModel & { _id: string }>>
 }

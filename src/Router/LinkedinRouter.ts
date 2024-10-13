@@ -29,4 +29,17 @@ LinkedinRouter.post("/post-job", async (req: Request, res: Response) => {
     }
 });
 
+LinkedinRouter.get('/candidate/:account_id', async (req: Request, res: Response) => {
+    try {
+        const account_id = req.params.account_id;
+        const linkedinScrapeController = new LinkedinScrapeController();
+        const response = await linkedinScrapeController.getJobDetails(account_id);
+        res.json(response);
+        return;
+    } catch (error) {
+        res.status(404).json(error);
+        return;
+    }
+})
+
 export default LinkedinRouter;

@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.668.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.4",
@@ -19,6 +20,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "mongoose": "^8.7.0",
+    "needle": "^3.3.1",
     "nodemon": "^3.1.7",
     "puppeteer": "^23.4.1",
     "ts-node": "^10.9.2",

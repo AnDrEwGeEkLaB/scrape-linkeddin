@@ -2,11 +2,12 @@ import { Cookie } from "puppeteer";
 import ILinkedinAccountCookiesModel from "../../Model/LinkedinAccounts/ILinkedinAccountCookiesModel";
 import LinkedinAccountCookiesService from "../../Service/LinkedinAccountCookies/LinkedinAccountCookiesService";
 import LinkedInScraperService from "../../Service/LinkedinScrape/LinkedinScrapeService";
+import GetCandidate from "../../Service/LinkedinScrape/getCandidate";
 
 export default class LinkedinScrapeController {
-    linkedinScrapeService: LinkedInScraperService;
+    linkedinScrapeService: GetCandidate;
     constructor() {
-        this.linkedinScrapeService = new LinkedInScraperService();
+        this.linkedinScrapeService = new GetCandidate();
     }
     async generateNewAccount(linkedinAccount: ILinkedinAccountCookiesModel): Promise<ILinkedinAccountCookiesModel> {
         const linkedinAccountCookiesService = new LinkedinAccountCookiesService();
@@ -38,12 +39,13 @@ export default class LinkedinScrapeController {
         const linkedinAccountCookiesService = new LinkedinAccountCookiesService();
 
         const getAccountCookies = await linkedinAccountCookiesService.getFreeAccount();
-        console.log(getAccountCookies);
+        console.log("=================================");
+        console.log(getAccountCookies?.cookies);
+        console.log("=================================");
         await this.linkedinScrapeService.launchBrowser();
         if (!getAccountCookies) {
             return "No Account Available";
         } else {
-
             await this.linkedinScrapeService.loadCookies(getAccountCookies.cookies || []);
             const checkProfile = await this.linkedinScrapeService.checkProfile();
             const profileUrlPattern = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
@@ -62,6 +64,11 @@ export default class LinkedinScrapeController {
                     details.description,
                     details.questions
                 );
+                const newCookies = await this.linkedinScrapeService.getCookies();
+                console.log("=================================");
+                console.log(newCookies);
+                console.log("=================================");
+                await linkedinAccountCookiesService.updateCookies(getAccountCookies._id, newCookies);
                 await this.linkedinScrapeService.closeBrowser();
                 await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
                 return getAccountCookies._id;
@@ -75,10 +82,33 @@ export default class LinkedinScrapeController {
                     details.description,
                     details.questions
                 );
+                const newCookies = await this.linkedinScrapeService.getCookies();
+                await linkedinAccountCookiesService.updateCookies(getAccountCookies._id, newCookies);
                 await this.linkedinScrapeService.closeBrowser();
+                await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
                 await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
                 return getAccountCookies._id;
             }
         }
+    }
+
+    async getJobDetails(account_id: string): Promise<any> {
+        const linkedinAccountCookiesService = new LinkedinAccountCookiesService();
+        const getAccountCookies = await linkedinAccountCookiesService.getCookies(account_id);
+        if (!getAccountCookies) {
+            return "No Account Available";
+        }
+        await this.linkedinScrapeService.launchBrowser();
+        await this.linkedinScrapeService.loadCookies(getAccountCookies.cookies);
+        const checkProfile = await this.linkedinScrapeService.checkProfile();
+        const profileUrlPattern = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+
+        if (!profileUrlPattern.test(checkProfile)) {
+            const newCookies = await this.updateAccountCookies(account_id, getAccountCookies.email, getAccountCookies.password);
+            await this.linkedinScrapeService.loadCookies(newCookies);
+        }
+        const result = await this.linkedinScrapeService.getApplicants();
+        await this.linkedinScrapeService.closeBrowser();
+        return result;
     }
 }
