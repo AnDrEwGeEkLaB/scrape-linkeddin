@@ -86,7 +86,6 @@ export default class LinkedinScrapeController {
                 await linkedinAccountCookiesService.updateCookies(getAccountCookies._id, newCookies);
                 await this.linkedinScrapeService.closeBrowser();
                 await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
-                await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
                 return getAccountCookies._id;
             }
         }
@@ -108,6 +107,8 @@ export default class LinkedinScrapeController {
             await this.linkedinScrapeService.loadCookies(newCookies);
         }
         const result = await this.linkedinScrapeService.getApplicants();
+        const newCookies = await this.linkedinScrapeService.getCookies();
+        await linkedinAccountCookiesService.updateCookies(account_id, newCookies);
         await this.linkedinScrapeService.closeBrowser();
         return result;
     }

@@ -53,44 +53,44 @@ export default class GetCandidate extends LinkedInScraperService {
       waitUntil: "domcontentloaded",
     });
     await delay(1000);
-    console.log("Navigated to the posted jobs page");
+    console.log("Navigated to the applicant jobs page");
     await this.page.evaluate(() => {
-      console.log("Clicking the first job");
-      const button = Array.from(
-        document.querySelectorAll(
-          ".workflow-results-container ul li a.app-aware-link"
-        )
-      );
-      if (button.length > 0) {
-        console.log(
-          "Button found, clicking it ====> ",
-          button[0].innerText,
-          button[1].innerText
+        console.log("Clicking the first job");
+        const openJob = Array.from(
+          document.querySelectorAll(
+            ".workflow-results-container ul li a.app-aware-link"
+          )
         );
-        button[1].click();
-      } else {
-        console.log("No job found");
-      }
+        if (openJob.length > 0) {
+          console.log(
+            "openJob found, clicking it ====> ",
+            openJob[0].innerText,
+            openJob[1].innerText
+          );
+          openJob[1].click();
+        } else {
+          console.log("No job found");
+        }
     });
     await delay(5000);
 
     await this.page.evaluate(() => {
       console.log("Clicking the View applicants button");
-      const button = Array.from(
-        document.querySelectorAll(".hiring-job-top-card button.artdeco-button")
+      const clickJob = Array.from(
+        document.querySelectorAll(".hiring-job-top-card__job-action button")
       );
-
-      if (button) {
-        console.log("Button found, clicking it");
-        button[0].click();
+      if (clickJob) {
+        console.log("clickJob found, clicking it");
+        clickJob[0].click();
       }
     });
 
     await delay(5000);
-    const applicantURLs = await this.page.evaluate(() => {
-      const applicant = [];
-      let currentPage = 1;
-      while (true) {
+    const applicantURLsResults = [];
+    let currentPage = 1;
+    while (true) {
+      const applicantURLs = await this.page.evaluate(() => {
+        const applicant = [];
         const anchors = document.querySelectorAll(".artdeco-list li a");
         Array.from(anchors).forEach((anchor) => {
           console.log("================", anchor.href);
@@ -100,24 +100,26 @@ export default class GetCandidate extends LinkedInScraperService {
           }
           applicant.push(href);
         });
-        currentPage += 1;
-        const button = Array.from(document.querySelectorAll("button")).find(
-          (el) => el.getAttribute("aria-label") === `Page ${currentPage}`
-        );
-        if (button) {
-          console.log("Clicking the next page button ====>", currentPage);
-          button.click();
-        } else {
-          console.log * "No more pages to click";
-          break;
-        }
+        return applicant;
+      });
+      applicantURLsResults.push(...applicantURLs);
+      currentPage += 1;
+      const button = await this.page.$(
+        `button[aria-label="Page ${currentPage}"]`
+      );
+      if (button) {
+        console.log("Clicking the next page button ====>", currentPage);
+        await button.click();
+        await delay(5000);
+      } else {
+        console.log("No more pages to click");
+        break;
       }
-      return applicant;
-    });
+    }
 
-    console.log("Applicant URLs:", applicantURLs);
+    console.log("Applicant URLs:", applicantURLsResults);
 
-    const applicantDetails = await this.extractApplicantDetails(applicantURLs);
+    const applicantDetails = await this.extractApplicantDetails(applicantURLsResults);
     return applicantDetails;
   }
 
