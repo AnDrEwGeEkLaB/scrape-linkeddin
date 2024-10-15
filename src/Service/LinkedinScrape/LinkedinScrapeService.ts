@@ -202,8 +202,11 @@ export default class LinkedInScraperService {
         await delay(1000);
         jobDetails[1].focus();
         await this.page.keyboard.down('Control');
+        await delay(1000);
         await this.page.keyboard.press('A');
+        await delay(1000);
         await this.page.keyboard.up('Control');
+        await delay(1000);
         await this.page.keyboard.press('Backspace');
         await delay(1000);
         await this.page.keyboard.type('Geek Labs Holdings ', { delay: 500 });
@@ -217,8 +220,11 @@ export default class LinkedInScraperService {
         /////
         jobDetails[2].focus();
         await this.page.keyboard.down('Control');
+        await delay(1000);
         await this.page.keyboard.press('A');
+        await delay(1000);
         await this.page.keyboard.up('Control');
+        await delay(1000);
         await this.page.keyboard.press('Backspace',);
         await delay(2000);
         await this.page.keyboard.type("Maadi", { delay: 500 });
