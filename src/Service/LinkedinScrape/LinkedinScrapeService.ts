@@ -91,9 +91,13 @@ export default class LinkedInScraperService {
             await this.page.click('.artdeco-typeahead__input'); // Focus on the input field
 
             await this.page.keyboard.down('Control')
+            await delay(2000);
             await this.page.keyboard.press('A');
+            await delay(2000);
             await this.page.keyboard.up('Control');
+            await delay(2000);
             await this.page.keyboard.press('Backspace');
+            await delay(2000);
             await this.page.type('.artdeco-typeahead__input[placeholder="Add the title you are hiring for"]', job_title, { delay: 100 });
             await delay(2000);
             await this.page.keyboard.press('ArrowDown');
@@ -104,9 +108,13 @@ export default class LinkedInScraperService {
 
             await this.page.click('.artdeco-typeahead__input.job-posting-shared-company-typeahead__input'); // Company name
             await this.page.keyboard.down('Control');
+            await delay(2000);
             await this.page.keyboard.press('A');
+            await delay(2000);
             await this.page.keyboard.up('Control');
+            await delay(2000);
             await this.page.keyboard.press('Backspace');
+            await delay(2000);
             await this.page.type('.artdeco-typeahead__input.job-posting-shared-company-typeahead__input', 'Geek Labs Holdings', { delay: 100 });
             console.log(`the felid of com name has been input`)
             /////
@@ -114,7 +122,9 @@ export default class LinkedInScraperService {
             await this.page.click('.artdeco-dropdown.artdeco-dropdown--placement-bottom.artdeco-dropdown--justification-left.ember-view', { delay: 100 }); // Workplace type
             await delay(2000);
             await this.page.keyboard.press('ArrowDown', { delay: 1000 });
+            await delay(2000);
             await this.page.keyboard.press('Enter');
+            await delay(2000);
             console.log(`Workplace type selected`)
             /////
             const jobLocation = await this.page.click('.artdeco-typeahead__input[placeholder=""]')
