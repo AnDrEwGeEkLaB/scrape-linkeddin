@@ -10,7 +10,7 @@ export default class LinkedInScraperService {
     private page: Page | null = null;
     async launchBrowser(): Promise<void> {
         this.browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             args: [
                 '--disable-http2',
                 '--no-sandbox',
