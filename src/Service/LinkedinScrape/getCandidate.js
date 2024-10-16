@@ -22,6 +22,7 @@ export default class GetCandidate extends LinkedInScraperService {
       Bucket: bucket,
       Key: key,
       Body: data,
+      ContentType: "application/pdf",
       ACL: "public-read-write",
     };
     try {
@@ -55,22 +56,22 @@ export default class GetCandidate extends LinkedInScraperService {
     await delay(1000);
     console.log("Navigated to the applicant jobs page");
     await this.page.evaluate(() => {
-        console.log("Clicking the first job");
-        const openJob = Array.from(
-          document.querySelectorAll(
-            ".workflow-results-container ul li a.app-aware-link"
-          )
+      console.log("Clicking the first job");
+      const openJob = Array.from(
+        document.querySelectorAll(
+          ".workflow-results-container ul li a.app-aware-link"
+        )
+      );
+      if (openJob.length > 0) {
+        console.log(
+          "openJob found, clicking it ====> ",
+          openJob[0].innerText,
+          openJob[1].innerText
         );
-        if (openJob.length > 0) {
-          console.log(
-            "openJob found, clicking it ====> ",
-            openJob[0].innerText,
-            openJob[1].innerText
-          );
-          openJob[1].click();
-        } else {
-          console.log("No job found");
-        }
+        openJob[1].click();
+      } else {
+        console.log("No job found");
+      }
     });
     await delay(5000);
 
@@ -119,7 +120,9 @@ export default class GetCandidate extends LinkedInScraperService {
 
     console.log("Applicant URLs:", applicantURLsResults);
 
-    const applicantDetails = await this.extractApplicantDetails(applicantURLsResults);
+    const applicantDetails = await this.extractApplicantDetails(
+      applicantURLsResults
+    );
     return applicantDetails;
   }
 
