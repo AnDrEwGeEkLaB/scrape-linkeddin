@@ -12,6 +12,12 @@ class CandidateService {
         const result = await candidateModel.findByIdAndUpdate(_id, { $set: { messageStatus } }, { new: true }).session(session);
         return result;
     }
+
+    async getCandidateByPhoneNumber(phoneNumber: string): Promise<ICandidateModel | null> {
+        const result = await candidateModel.findOne({ phoneNumber });
+        return result;
+    }
+
 }
 
 const candidateService = new CandidateService();

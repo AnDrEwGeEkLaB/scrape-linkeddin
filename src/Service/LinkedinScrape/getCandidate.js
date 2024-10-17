@@ -199,7 +199,7 @@ export default class GetCandidate extends LinkedInScraperService {
             await cvDownloadElement.click();
             await delay(5000); // Wait for the download to complete
 
-            fileName = `${email}-${new Date().valueOf()}.pdf`;
+            fileName = `${email}.pdf`;
             cvPath = path.join(this.downloadDir, fileName);
 
             // set CV Name to the applicant's name

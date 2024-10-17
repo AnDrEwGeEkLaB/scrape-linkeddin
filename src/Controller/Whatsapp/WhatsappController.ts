@@ -3,6 +3,7 @@ import WhatsAppClient from "../../Service/Whatsapp/whatsappService";
 import candidateService from "../../Service/CandidateService/CandidateService";
 import ICandidateModel from "../../Model/Candidate/ICandidateModel";
 import { HiringSteps, HiringStepsEnum, StatusEnum } from "../../utils";
+import axios from "axios";
 
 export default class WhatsAppController {
     session: ClientSession
@@ -47,5 +48,29 @@ const initializeClient = (clientId: string) => {
     }
 };
 
+const getCandidateTask = async (number: string, msg: string): Promise<void> => {
+    const phoneNumber = `+${number.split('@')[0]}`;
+    const candidate = await candidateService.getCandidateByPhoneNumber(phoneNumber);
+    console.log(candidate);
+    if (!candidate)
+        return;
+    const regex = /https:\/\/[^\s]+/g;
+    const taskUrl = msg.match(regex)?.join(' , ');
+    if (!taskUrl)
+        return;
+    const data = {
 
-export { initializeClient, clients };
+        email: candidate.email,
+        taskUrl: taskUrl.toString()
+    }
+    console.log(data);
+    const result = await axios.post('https://api-development.machinegenius.io/un-authorized/candidate', data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    console.log(result.data);
+    return;
+}
+
+export { initializeClient, clients, getCandidateTask };

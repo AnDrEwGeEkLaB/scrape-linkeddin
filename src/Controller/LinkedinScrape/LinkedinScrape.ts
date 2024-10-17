@@ -60,7 +60,6 @@ export default class LinkedinScrapeController {
                 await this.linkedinScrapeService.postJobSecondForm(
                     details.jobTitle,
                     details.contract_type,
-                    details.skills,
                     details.description,
                     details.questions
                 );
@@ -78,7 +77,6 @@ export default class LinkedinScrapeController {
                 await this.linkedinScrapeService.postJobFirstForm(
                     details.jobTitle,
                     details.contract_type,
-                    details.skills,
                     details.description,
                     details.questions
                 );

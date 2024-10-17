@@ -84,7 +84,7 @@ export default class LinkedInScraperService {
     }
 
 
-    async postJobFirstForm(job_title: string, contract_type: number, skills: string[], description: string, questions: Array<any>): Promise<string> {
+    async postJobFirstForm(job_title: string, contract_type: number, description: string, questions: Array<any>): Promise<string> {
         try {
 
             if (!this.page) throw new Error('Browser has not been launched.');
@@ -159,7 +159,7 @@ export default class LinkedInScraperService {
             });
 
             await this.page.waitForNavigation({ timeout: 600000 })
-            const url = await this.commonPostJobProcess(skills, description, questions);
+            const url = await this.commonPostJobProcess(description, questions);
             return url;
 
         }
@@ -169,7 +169,7 @@ export default class LinkedInScraperService {
         }
     }
 
-    async postJobSecondForm(job_title: string, contract_type: number, skills: string[], description: string, questions: Array<any>): Promise<string> {
+    async postJobSecondForm(job_title: string, contract_type: number, description: string, questions: Array<any>): Promise<string> {
         if (!this.page) throw new Error('Browser has not been launched.');
         console.log("Enter HERE");
         await this.page.click('.artdeco-typeahead__input.job-posting-shared-job-title-typeahead__input-v2'); // Focus on the input field
@@ -242,12 +242,12 @@ export default class LinkedInScraperService {
         }
         await this.page.keyboard.press('Enter', { delay: 1000 });
         /////
-        const url = await this.commonPostJobProcess(skills, description, questions);
+        const url = await this.commonPostJobProcess(description, questions);
         return url;
     }
 
 
-    async commonPostJobProcess(skills: string[], description: string, questions: Array<any>): Promise<string> {
+    async commonPostJobProcess(description: string, questions: Array<any>): Promise<string> {
         if (!this.page) throw new Error('Browser has not been launched.');
         // Description
         await this.page.click(".ql-editor")
@@ -287,41 +287,10 @@ export default class LinkedInScraperService {
             console.error("The selector '.ql-editor' was not found.");
         }
 
-        // Close skills section
-        await delay(5000)
-        const closeSkills = await this.page.evaluate(() => {
-            console.log(
-                "JERE 2"
-            );
-            const closeButtons = document.querySelectorAll(".artdeco-pill.artdeco-pill--slate.artdeco-pill--2.artdeco-pill--dismiss.artdeco-pill--selected.ember-view.mv1.mr2.pv2");
-            closeButtons.forEach(button => (button as HTMLElement).click());
-            return closeButtons.length
-        });
-        console.log(`Closed ${closeSkills} skill(s)`);
-
-        // Add Skill section 
-
-        for (let i = 0; i < skills.length; i++) {
-            await this.page.type(".artdeco-pill__input.job-posting-shared-job-skill-typeahead__ta-trigger", skills[i], { delay: 100 });
-            await delay(2000);
-            await this.page.keyboard.press("ArrowDown", { delay: 100 });
-            await delay(1500);
-            await this.page.keyboard.press("Enter", { delay: 100 });
-        }
-
         await this.page.click(".artdeco-button.artdeco-button--2.artdeco-button--primary.ember-view", { delay: 100 });
         await delay(2500);
 
 
-        await this.page.evaluate(async () => {
-            console.log("JERE 3");
-            Array.from(
-                document.querySelectorAll(".artdeco-button.artdeco-button--circle.artdeco-button--muted.artdeco-button--1.artdeco-button--tertiary.ember-view.artdeco-card__dismiss"))
-                .forEach(button => (button as HTMLElement).click())
-        });
-
-
-        // Add question section
         await delay(3000);
         await this.goToQuestionSection(questions);
         console.log("task has been finished");
