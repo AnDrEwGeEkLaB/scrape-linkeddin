@@ -54,7 +54,7 @@ class LinkedinScrapeController {
             const checkWhichForm = await this.linkedinScrapeService.checkWhichForm();
             if (checkWhichForm === "Second_Form") {
                 console.log("Second Form");
-                await this.linkedinScrapeService.postJobSecondForm(details.jobTitle, details.contract_type, details.skills, details.description, details.questions);
+                await this.linkedinScrapeService.postJobSecondForm(details.jobTitle, details.contract_type, details.description, details.questions);
                 const newCookies = await this.linkedinScrapeService.getCookies();
                 console.log("=================================");
                 console.log(newCookies);
@@ -66,7 +66,7 @@ class LinkedinScrapeController {
             }
             else {
                 console.log("First Form");
-                await this.linkedinScrapeService.postJobFirstForm(details.jobTitle, details.contract_type, details.skills, details.description, details.questions);
+                await this.linkedinScrapeService.postJobFirstForm(details.jobTitle, details.contract_type, details.description, details.questions);
                 const newCookies = await this.linkedinScrapeService.getCookies();
                 await linkedinAccountCookiesService.updateCookies(getAccountCookies._id, newCookies);
                 await this.linkedinScrapeService.closeBrowser();
@@ -90,6 +90,28 @@ class LinkedinScrapeController {
             await this.linkedinScrapeService.loadCookies(newCookies);
         }
         const result = await this.linkedinScrapeService.getApplicants();
+        const newCookies = await this.linkedinScrapeService.getCookies();
+        await linkedinAccountCookiesService.updateCookies(account_id, newCookies);
+        await this.linkedinScrapeService.closeBrowser();
+        return result;
+    }
+    async getJobStatus(account_id) {
+        const linkedinAccountCookiesService = new LinkedinAccountCookiesService_1.default();
+        const getAccountCookies = await linkedinAccountCookiesService.getCookies(account_id);
+        if (!getAccountCookies) {
+            return "No Account Available";
+        }
+        await this.linkedinScrapeService.launchBrowser();
+        await this.linkedinScrapeService.loadCookies(getAccountCookies.cookies);
+        const checkProfile = await this.linkedinScrapeService.checkProfile();
+        const profileUrlPattern = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+        if (!profileUrlPattern.test(checkProfile)) {
+            const newCookies = await this.updateAccountCookies(account_id, getAccountCookies.email, getAccountCookies.password);
+            await this.linkedinScrapeService.loadCookies(newCookies);
+        }
+        const result = await this.linkedinScrapeService.getJobStatus();
+        if (result === "Paused")
+            await this.linkedinScrapeService.closeJob();
         const newCookies = await this.linkedinScrapeService.getCookies();
         await linkedinAccountCookiesService.updateCookies(account_id, newCookies);
         await this.linkedinScrapeService.closeBrowser();

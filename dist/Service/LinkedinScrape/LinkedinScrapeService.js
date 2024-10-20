@@ -16,7 +16,7 @@ class LinkedInScraperService {
     }
     async launchBrowser() {
         this.browser = await puppeteer_1.default.launch({
-            headless: false,
+            headless: true,
             args: [
                 '--disable-http2',
                 '--no-sandbox',
@@ -90,7 +90,7 @@ class LinkedInScraperService {
         }
         return "Second_Form";
     }
-    async postJobFirstForm(job_title, contract_type, skills, description, questions) {
+    async postJobFirstForm(job_title, contract_type, description, questions) {
         try {
             if (!this.page)
                 throw new Error('Browser has not been launched.');
@@ -104,6 +104,10 @@ class LinkedInScraperService {
             await this.page.keyboard.press('Backspace');
             await delay(2000);
             await this.page.type('.artdeco-typeahead__input[placeholder="Add the title you are hiring for"]', job_title, { delay: 100 });
+            await delay(2000);
+            await this.page.keyboard.press('ArrowDown');
+            await delay(2000);
+            await this.page.keyboard.press('Enter');
             await delay(2000); // job title selected
             /////
             await this.page.click('.artdeco-typeahead__input.job-posting-shared-company-typeahead__input'); // Company name
@@ -155,7 +159,7 @@ class LinkedInScraperService {
                 });
             });
             await this.page.waitForNavigation({ timeout: 600000 });
-            const url = await this.commonPostJobProcess(skills, description, questions);
+            const url = await this.commonPostJobProcess(description, questions);
             return url;
         }
         catch (error) {
@@ -163,7 +167,7 @@ class LinkedInScraperService {
             throw error;
         }
     }
-    async postJobSecondForm(job_title, contract_type, skills, description, questions) {
+    async postJobSecondForm(job_title, contract_type, description, questions) {
         if (!this.page)
             throw new Error('Browser has not been launched.');
         console.log("Enter HERE");
@@ -175,6 +179,10 @@ class LinkedInScraperService {
         await this.page.keyboard.press('Backspace');
         console.log("HERE", { job_title });
         await this.page.keyboard.type(job_title, { delay: 100 });
+        await delay(2000);
+        await this.page.keyboard.press('ArrowDown');
+        await delay(2000);
+        await this.page.keyboard.press('Enter');
         await delay(2000);
         console.log("Job title successfully selected");
         await this.page.evaluate(() => {
@@ -227,10 +235,10 @@ class LinkedInScraperService {
         }
         await this.page.keyboard.press('Enter', { delay: 1000 });
         /////
-        const url = await this.commonPostJobProcess(skills, description, questions);
+        const url = await this.commonPostJobProcess(description, questions);
         return url;
     }
-    async commonPostJobProcess(skills, description, questions) {
+    async commonPostJobProcess(description, questions) {
         if (!this.page)
             throw new Error('Browser has not been launched.');
         // Description
@@ -268,15 +276,16 @@ class LinkedInScraperService {
         else {
             console.error("The selector '.ql-editor' was not found.");
         }
-        // Add question section
+        await this.page.click(".artdeco-button.artdeco-button--2.artdeco-button--primary.ember-view", { delay: 100 });
+        await delay(2500);
         await delay(3000);
         await this.goToQuestionSection(questions);
         console.log("task has been finished");
         await delay(3000);
-        //await this.page.click(`.artdeco-button.artdeco-button--2.artdeco-button--primary.ember-view[data-validate-submit-type="Next"]`);
+        await this.page.click(`.artdeco-button.artdeco-button--2.artdeco-button--primary.ember-view[data-validate-submit-type="Next"]`);
         ////Final 
         await delay(4000);
-        //await this.page.click(".job-posting-footer__secondary-cta.artdeco-button.artdeco-button--muted.artdeco-button--2.artdeco-button--secondary.ember-view")
+        await this.page.click(".job-posting-footer__secondary-cta.artdeco-button.artdeco-button--muted.artdeco-button--2.artdeco-button--secondary.ember-view");
         console.log("task has been finished");
         const url = this.page.url();
         console.log('Navigated to LinkedIn profile page', url);

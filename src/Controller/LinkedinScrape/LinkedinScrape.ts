@@ -110,4 +110,29 @@ export default class LinkedinScrapeController {
         await this.linkedinScrapeService.closeBrowser();
         return result;
     }
+
+
+    async getJobStatus(account_id: string): Promise<any> {
+        const linkedinAccountCookiesService = new LinkedinAccountCookiesService();
+        const getAccountCookies = await linkedinAccountCookiesService.getCookies(account_id);
+        if (!getAccountCookies) {
+            return "No Account Available";
+        }
+        await this.linkedinScrapeService.launchBrowser();
+        await this.linkedinScrapeService.loadCookies(getAccountCookies.cookies);
+        const checkProfile = await this.linkedinScrapeService.checkProfile();
+        const profileUrlPattern = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+
+        if (!profileUrlPattern.test(checkProfile)) {
+            const newCookies = await this.updateAccountCookies(account_id, getAccountCookies.email, getAccountCookies.password);
+            await this.linkedinScrapeService.loadCookies(newCookies);
+        }
+        const result = await this.linkedinScrapeService.getJobStatus();
+        if (result === "Paused")
+            await this.linkedinScrapeService.closeJob();
+        const newCookies = await this.linkedinScrapeService.getCookies();
+        await linkedinAccountCookiesService.updateCookies(account_id, newCookies);
+        await this.linkedinScrapeService.closeBrowser();
+        return result;
+    }
 }

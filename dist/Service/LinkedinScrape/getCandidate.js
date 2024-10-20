@@ -228,5 +228,47 @@ class GetCandidate extends LinkedinScrapeService_1.default {
         }
         return details;
     }
+    async getJobStatus() {
+        if (!this.page)
+            throw new Error("Browser has not been launched.");
+        console.log("Start get Job Status");
+        await this.page.goto("https://www.linkedin.com/my-items/posted-jobs/", {
+            waitUntil: "domcontentloaded",
+        });
+        await delay(3000);
+        const checkStatus = await this.page.evaluate(() => {
+            console.log("Clicking the first job");
+            const openJob = document.querySelector(".tvm__text.tvm__text");
+            console.log("========================>", openJob.innerText);
+            return openJob.innerText;
+        });
+        return checkStatus;
+    }
+    async closeJob() {
+        if (!this.page)
+            throw new Error("Browser has not been launched.");
+        await this.page.evaluate(() => {
+            console.log("Clicking the first job");
+            const openJob = Array.from(document.querySelectorAll(".workflow-results-container ul li a.app-aware-link"));
+            if (openJob.length > 0) {
+                console.log("openJob found, clicking it ====> ", openJob[0].innerText, openJob[1].innerText);
+                openJob[1].click();
+            }
+            else {
+                console.log("No job found");
+            }
+        });
+        await delay(5000);
+        await this.page.evaluate(() => {
+            console.log("Clicking close job button");
+            const clickJob = Array.from(document.querySelectorAll(".hiring-job-top-card__job-action button"));
+            if (clickJob) {
+                console.log("clickJob found, clicking it");
+                console.log(clickJob[1].innerText);
+                //clickJob[1].click();
+            }
+        });
+        await delay(20000);
+    }
 }
 exports.default = GetCandidate;
