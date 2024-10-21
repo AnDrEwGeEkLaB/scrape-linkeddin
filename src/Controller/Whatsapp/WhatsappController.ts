@@ -19,7 +19,7 @@ export default class WhatsAppController {
         }
         if (currentStepIndex === HiringSteps.length - 1)
             throw 'LAST_HIRING_STEP';
-        messageStatus[currentStepIndex + 1].status = StatusEnum.APPROVED;
+        messageStatus[currentStepIndex].status = StatusEnum.APPROVED;
         const result = await candidateService.changeMessageStatus(_id, messageStatus, session);
         if (!result)
             throw 'CANDIDATE_NOT_FOUND';
