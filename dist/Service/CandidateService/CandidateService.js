@@ -9,8 +9,8 @@ class CandidateService {
         const result = await CandidateModel_1.default.findById(_id).session(session).select({ phoneNumber: 1, currentStep: 1, email: 1, messageStatus: 1 });
         return result;
     }
-    async changeMessageStatus(_id, messageStatus, session) {
-        const result = await CandidateModel_1.default.findByIdAndUpdate(_id, { $set: { messageStatus } }, { new: true }).session(session);
+    async changeMessageStatus(_id, messageStatus, stepsStatus, session) {
+        const result = await CandidateModel_1.default.findByIdAndUpdate(_id, { $set: { messageStatus, stepsStatus } }, { new: true }).session(session);
         return result;
     }
     async getCandidateByPhoneNumber(phoneNumber) {

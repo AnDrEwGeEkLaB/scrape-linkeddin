@@ -13,7 +13,7 @@ class WhatsAppController {
         this.session = session;
     }
     async changeMessageStatus(_id, candidate, session) {
-        const { currentStep, messageStatus } = candidate;
+        const { currentStep, messageStatus, stepsStatus } = candidate;
         const currentStepIndex = utils_1.HiringSteps.indexOf(currentStep);
         if (currentStepIndex === -1) {
             throw 'CURRENT_STEP_NOT_FOUND';
@@ -21,7 +21,8 @@ class WhatsAppController {
         if (currentStepIndex === utils_1.HiringSteps.length - 1)
             throw 'LAST_HIRING_STEP';
         messageStatus[currentStepIndex].status = utils_1.StatusEnum.APPROVED;
-        const result = await CandidateService_1.default.changeMessageStatus(_id, messageStatus, session);
+        stepsStatus[currentStepIndex].status = utils_1.StatusEnum.APPROVED;
+        const result = await CandidateService_1.default.changeMessageStatus(_id, messageStatus, stepsStatus, session);
         if (!result)
             throw 'CANDIDATE_NOT_FOUND';
     }
