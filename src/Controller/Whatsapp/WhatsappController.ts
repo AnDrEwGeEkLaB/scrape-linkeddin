@@ -12,7 +12,7 @@ export default class WhatsAppController {
     }
 
     async changeMessageStatus(_id: string, candidate: ICandidateModel, session: ClientSession): Promise<void> {
-        const { currentStep, messageStatus } = candidate;
+        const { currentStep, messageStatus, stepsStatus } = candidate;
         const currentStepIndex = HiringSteps.indexOf(currentStep as HiringStepsEnum);
         if (currentStepIndex === -1) {
             throw 'CURRENT_STEP_NOT_FOUND'
@@ -20,7 +20,8 @@ export default class WhatsAppController {
         if (currentStepIndex === HiringSteps.length - 1)
             throw 'LAST_HIRING_STEP';
         messageStatus[currentStepIndex].status = StatusEnum.APPROVED;
-        const result = await candidateService.changeMessageStatus(_id, messageStatus, session);
+        stepsStatus[currentStepIndex].status = StatusEnum.APPROVED;
+        const result = await candidateService.changeMessageStatus(_id, messageStatus, stepsStatus, session);
         if (!result)
             throw 'CANDIDATE_NOT_FOUND';
     }

@@ -8,8 +8,8 @@ class CandidateService {
         return result;
     }
 
-    async changeMessageStatus(_id: string, messageStatus: Array<IStepStatus>, session: ClientSession): Promise<ICandidateModel | null> {
-        const result = await candidateModel.findByIdAndUpdate(_id, { $set: { messageStatus } }, { new: true }).session(session);
+    async changeMessageStatus(_id: string, messageStatus: Array<IStepStatus>, stepsStatus: Array<IStepStatus>, session: ClientSession): Promise<ICandidateModel | null> {
+        const result = await candidateModel.findByIdAndUpdate(_id, { $set: { messageStatus, stepsStatus } }, { new: true }).session(session);
         return result;
     }
 
