@@ -15,7 +15,7 @@ wss.on('connection', (ws: WebSocket) => {
         console.log("Init client")
         console.log(`WebSocket connection established for client ${clientId}`);
         clients[clientId].client.on('message', async (msg: { from: string; body: string }) => {
-            //ws.send(JSON.stringify({ from: msg.from, body: msg.body }));
+            ws.send(JSON.stringify({ from: msg.from, body: msg.body }));
             await getCandidateTask(msg.from, msg.body);
         });
         clients[clientId].client.on('qr', (qr: string) => {
