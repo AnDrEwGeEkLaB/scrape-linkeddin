@@ -4,7 +4,7 @@ import candidateModel from "../../Model/Candidate/CandidateModel";
 
 class CandidateService {
     async getCandidateConnection(_id: string, session: ClientSession): Promise<ICandidateModel | null> {
-        const result = await candidateModel.findById(_id).session(session).select({ phoneNumber: 1, currentStep: 1, email: 1, messageStatus: 1 });
+        const result = await candidateModel.findById(_id).session(session).select({ phoneNumber: 1, currentStep: 1, email: 1, messageStatus: 1, stepsStatus: 1 });
         return result;
     }
 

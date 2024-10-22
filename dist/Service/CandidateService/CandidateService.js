@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CandidateModel_1 = __importDefault(require("../../Model/Candidate/CandidateModel"));
 class CandidateService {
     async getCandidateConnection(_id, session) {
-        const result = await CandidateModel_1.default.findById(_id).session(session).select({ phoneNumber: 1, currentStep: 1, email: 1, messageStatus: 1 });
+        const result = await CandidateModel_1.default.findById(_id).session(session).select({ phoneNumber: 1, currentStep: 1, email: 1, messageStatus: 1, stepsStatus: 1 });
         return result;
     }
     async changeMessageStatus(_id, messageStatus, stepsStatus, session) {
