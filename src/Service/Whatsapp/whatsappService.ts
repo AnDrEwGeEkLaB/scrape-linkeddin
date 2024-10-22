@@ -16,7 +16,7 @@ class WhatsAppClient {
             }
         });
         this.client.on('qr', (qr: string) => {
-            console.log(`QR for ${clientId}:`, qr);
+           // console.log(`QR for ${clientId}:`, qr);
         });
         this.client.on('ready', () => {
             console.log(`Client ${clientId} is ready!`);
