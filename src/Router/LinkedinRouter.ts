@@ -7,7 +7,7 @@ LinkedinRouter.post("/generate-new-account", async (req: Request, res: Response)
     try {
         const { email, password } = req.body;
         const linkedinScrapeController = new LinkedinScrapeController();
-        const response = await linkedinScrapeController.generateNewAccount({ email, password, cookies: [], isBusy: false });
+        const response = await linkedinScrapeController.generateNewAccount({ email, password, cookies: [], isBusy: false, getCandidate: false });
         res.status(200).json(response);
         return;
     } catch (error) {

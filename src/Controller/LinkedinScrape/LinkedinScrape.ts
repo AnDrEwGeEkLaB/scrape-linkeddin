@@ -19,10 +19,18 @@ export default class LinkedinScrapeController {
             cookies: cookies,
             email: linkedinAccount.email,
             password: linkedinAccount.password,
-            isBusy: false
+            isBusy: false,
+            getCandidate: false
         };
         const result = await linkedinAccountCookiesService.saveCookies(account);
         return result;
+    }
+
+    async up(_id: string, email: string, password: string): Promise<string> {
+        await this.linkedinScrapeService.launchBrowser();
+        await this.updateAccountCookies(_id, email, password);
+        await this.linkedinScrapeService.closeBrowser();
+        return "Updated";
     }
 
     async updateAccountCookies(_id: string, email: string, password: string): Promise<Cookie[]> {
@@ -63,14 +71,6 @@ export default class LinkedinScrapeController {
                     details.description,
                     details.questions
                 );
-                const newCookies = await this.linkedinScrapeService.getCookies();
-                console.log("=================================");
-                console.log(newCookies);
-                console.log("=================================");
-                await linkedinAccountCookiesService.updateCookies(getAccountCookies._id, newCookies);
-                await this.linkedinScrapeService.closeBrowser();
-                await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
-                return getAccountCookies._id;
             }
             else {
                 console.log("First Form");
@@ -80,12 +80,15 @@ export default class LinkedinScrapeController {
                     details.description,
                     details.questions
                 );
-                const newCookies = await this.linkedinScrapeService.getCookies();
-                await linkedinAccountCookiesService.updateCookies(getAccountCookies._id, newCookies);
-                await this.linkedinScrapeService.closeBrowser();
-                await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true);
-                return getAccountCookies._id;
             }
+            const newCookies = await this.linkedinScrapeService.getCookies();
+            console.log("=================================");
+            console.log(newCookies);
+            console.log("=================================");
+            await linkedinAccountCookiesService.updateCookies(getAccountCookies._id, newCookies);
+            await this.linkedinScrapeService.closeBrowser();
+            await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true, true);
+            return getAccountCookies._id;
         }
     }
 
@@ -132,6 +135,7 @@ export default class LinkedinScrapeController {
             await this.linkedinScrapeService.closeJob();
         const newCookies = await this.linkedinScrapeService.getCookies();
         await linkedinAccountCookiesService.updateCookies(account_id, newCookies);
+        await linkedinAccountCookiesService.updateBusyAccount(account_id, true, false);
         await this.linkedinScrapeService.closeBrowser();
         return result;
     }

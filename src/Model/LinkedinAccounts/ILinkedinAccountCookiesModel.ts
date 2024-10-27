@@ -5,4 +5,5 @@ export default interface ILinkedinAccountCookiesModel {
     email: string;
     password: string;
     isBusy: boolean;
+    getCandidate: boolean;
 }

@@ -27,8 +27,8 @@ export default class LinkedinAccountCookiesService implements ILinkedinAccountCo
         return await LinkedinAccountCookiesModel.findOne({ isBusy: false });
     }
 
-    async updateBusyAccount(_id: string, isBusy: boolean): Promise<ILinkedinAccountCookiesModel | null> {
-        return await LinkedinAccountCookiesModel.findByIdAndUpdate(_id, { isBusy }, { new: true });
+    async updateBusyAccount(_id: string, isBusy: boolean, getCandidate: boolean): Promise<ILinkedinAccountCookiesModel | null> {
+        return await LinkedinAccountCookiesModel.findByIdAndUpdate(_id, { isBusy, getCandidate }, { new: true });
     }
 
     async getBusyAccount(): Promise<Array<ILinkedinAccountCookiesModel & { _id: string }>> {
