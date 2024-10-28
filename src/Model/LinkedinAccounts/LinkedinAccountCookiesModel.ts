@@ -10,6 +10,7 @@ const LinkedinAccountCookiesSchema = new Schema<ILinkedinAccountCookiesModel>({
     },
     isBusy: { type: Boolean, default: false },
     getCandidate: { type: Boolean, default: false },
+    updatedAt: { type: Number }
 
 });
 

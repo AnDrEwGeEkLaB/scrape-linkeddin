@@ -20,7 +20,8 @@ export default class LinkedinScrapeController {
             email: linkedinAccount.email,
             password: linkedinAccount.password,
             isBusy: false,
-            getCandidate: false
+            getCandidate: false,
+            updatedAt: -1
         };
         const result = await linkedinAccountCookiesService.saveCookies(account);
         return result;
