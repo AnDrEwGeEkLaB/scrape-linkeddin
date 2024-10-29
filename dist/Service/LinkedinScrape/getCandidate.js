@@ -268,7 +268,19 @@ class GetCandidate extends LinkedinScrapeService_1.default {
                 clickJob[1].click();
             }
         });
-        await delay(20000);
+        await delay(5000);
+        await this.page.evaluate(() => {
+            console.log("Clicking the close job button in popup");
+            const allButtons = Array.from(document.querySelectorAll(".artdeco-button__text"));
+            console.log("===================================");
+            const closeJobButton = allButtons.find((button) => button.innerText === "Close job post");
+            console.log("===================================");
+            if (closeJobButton) {
+                console.log("closeJobButton found, clicking it");
+                closeJobButton.click();
+            }
+        });
+        await delay(2000);
     }
 }
 exports.default = GetCandidate;

@@ -113,11 +113,12 @@ class LinkedinScrapeController {
             await this.linkedinScrapeService.loadCookies(newCookies);
         }
         const result = await this.linkedinScrapeService.getJobStatus();
-        if (result === "Paused")
+        if (result === "Paused") {
             await this.linkedinScrapeService.closeJob();
+            await linkedinAccountCookiesService.updateBusyAccount(account_id, true, false);
+        }
         const newCookies = await this.linkedinScrapeService.getCookies();
         await linkedinAccountCookiesService.updateCookies(account_id, newCookies);
-        await linkedinAccountCookiesService.updateBusyAccount(account_id, true, false);
         await this.linkedinScrapeService.closeBrowser();
         return result;
     }
