@@ -290,7 +290,7 @@ export default class GetCandidate extends LinkedInScraperService {
       if (clickJob) {
         console.log("clickJob found, clicking it");
         console.log(clickJob[1].innerText);
-        //clickJob[1].click();
+        clickJob[1].click();
       }
     });
     await delay(20000);
