@@ -24,8 +24,9 @@ class LinkedinAccountCookiesService {
     async getFreeAccount() {
         return await LinkedinAccountCookiesModel_1.default.findOne({ isBusy: false });
     }
-    async updateBusyAccount(_id, isBusy) {
-        return await LinkedinAccountCookiesModel_1.default.findByIdAndUpdate(_id, { isBusy }, { new: true });
+    async updateBusyAccount(_id, isBusy, getCandidate) {
+        const timeStampAfter7Days = new Date().valueOf() + 7 * 24 * 60 * 60 * 1000;
+        return await LinkedinAccountCookiesModel_1.default.findByIdAndUpdate(_id, { isBusy, getCandidate, updatedAt: timeStampAfter7Days }, { new: true });
     }
     async getBusyAccount() {
         return await LinkedinAccountCookiesModel_1.default.find({ isBusy: true });

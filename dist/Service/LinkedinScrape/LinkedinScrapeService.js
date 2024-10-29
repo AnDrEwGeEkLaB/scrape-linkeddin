@@ -16,7 +16,7 @@ class LinkedInScraperService {
     }
     async launchBrowser() {
         this.browser = await puppeteer_1.default.launch({
-            headless: true,
+            headless: process.env.ENV === 'dev' ? false : true,
             args: [
                 '--disable-http2',
                 '--no-sandbox',
@@ -195,6 +195,16 @@ class LinkedInScraperService {
         await this.page.waitForNavigation({ timeout: 600000 });
         const jobDetails = await this.page.$$('.artdeco-typeahead__input');
         await delay(1000);
+        jobDetails[0].focus();
+        await this.page.keyboard.down('Control');
+        await delay(1000);
+        await this.page.keyboard.press('A');
+        await delay(1000);
+        await this.page.keyboard.up('Control');
+        await delay(1000);
+        await this.page.keyboard.press('Backspace');
+        await delay(1000);
+        await this.page.keyboard.type(job_title, { delay: 500 });
         jobDetails[1].focus();
         await this.page.keyboard.down('Control');
         await delay(1000);

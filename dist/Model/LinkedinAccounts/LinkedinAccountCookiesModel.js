@@ -10,6 +10,8 @@ const LinkedinAccountCookiesSchema = new mongoose_1.Schema({
         type: String,
     },
     isBusy: { type: Boolean, default: false },
+    getCandidate: { type: Boolean, default: false },
+    updatedAt: { type: Number }
 });
 const LinkedinAccountCookiesModel = (0, mongoose_1.model)("LinkedinAccountCookies", LinkedinAccountCookiesSchema);
 exports.default = LinkedinAccountCookiesModel;
