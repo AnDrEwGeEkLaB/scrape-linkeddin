@@ -53,7 +53,7 @@ export default class GetCandidate extends LinkedInScraperService {
     await this.page.goto("https://www.linkedin.com/my-items/posted-jobs/", {
       waitUntil: "domcontentloaded",
     });
-    await delay(1000);
+    await delay(10000);
     console.log("Navigated to the applicant jobs page");
     await this.page.evaluate(() => {
       console.log("Clicking the first job");
@@ -73,6 +73,7 @@ export default class GetCandidate extends LinkedInScraperService {
         console.log("No job found");
       }
     });
+    console.log("Enter inside first job");
     await delay(5000);
 
     await this.page.evaluate(() => {
@@ -85,7 +86,7 @@ export default class GetCandidate extends LinkedInScraperService {
         clickJob[0].click();
       }
     });
-
+    console.log("Enter inside applicants page");
     await delay(5000);
     const applicantURLsResults = [];
     let currentPage = 1;
@@ -249,7 +250,7 @@ export default class GetCandidate extends LinkedInScraperService {
     await this.page.goto("https://www.linkedin.com/my-items/posted-jobs/", {
       waitUntil: "domcontentloaded",
     });
-    await delay(3000);
+    await delay(10000);
 
     const checkStatus = await this.page.evaluate(() => {
       console.log("Clicking the first job");
