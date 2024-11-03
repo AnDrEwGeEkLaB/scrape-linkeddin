@@ -92,7 +92,7 @@ class LinkedinScrapeController {
                 console.log("=================================");
                 await linkedinAccountCookiesService.updateCookies(getAccountCookies._id, newCookies);
                 await this.linkedinScrapeService.closeBrowser();
-                await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true, true);
+                await linkedinAccountCookiesService.updateBusyAccount(getAccountCookies._id, true, true, -1);
                 return getAccountCookies._id;
             }
         }
@@ -145,7 +145,8 @@ class LinkedinScrapeController {
             const result = await this.linkedinScrapeService.getJobStatus();
             if (result === "Paused") {
                 await this.linkedinScrapeService.closeJob();
-                await linkedinAccountCookiesService.updateBusyAccount(account_id, true, false);
+                const timeStampAfter7Days = new Date().valueOf() + 7 * 24 * 60 * 60 * 1000;
+                await linkedinAccountCookiesService.updateBusyAccount(account_id, true, false, timeStampAfter7Days);
             }
             const newCookies = await this.linkedinScrapeService.getCookies();
             await linkedinAccountCookiesService.updateCookies(account_id, newCookies);
