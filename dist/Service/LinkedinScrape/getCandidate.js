@@ -80,7 +80,7 @@ class GetCandidate extends LinkedinScrapeService_1.default {
         await this.page.goto("https://www.linkedin.com/my-items/posted-jobs/", {
             waitUntil: "domcontentloaded",
         });
-        await delay(1000);
+        await delay(10000);
         console.log("Navigated to the applicant jobs page");
         await this.page.evaluate(() => {
             console.log("Clicking the first job");
@@ -93,6 +93,7 @@ class GetCandidate extends LinkedinScrapeService_1.default {
                 console.log("No job found");
             }
         });
+        console.log("Enter inside first job");
         await delay(5000);
         await this.page.evaluate(() => {
             console.log("Clicking the View applicants button");
@@ -102,6 +103,7 @@ class GetCandidate extends LinkedinScrapeService_1.default {
                 clickJob[0].click();
             }
         });
+        console.log("Enter inside applicants page");
         await delay(5000);
         const applicantURLsResults = [];
         let currentPage = 1;
@@ -235,7 +237,7 @@ class GetCandidate extends LinkedinScrapeService_1.default {
         await this.page.goto("https://www.linkedin.com/my-items/posted-jobs/", {
             waitUntil: "domcontentloaded",
         });
-        await delay(3000);
+        await delay(10000);
         const checkStatus = await this.page.evaluate(() => {
             console.log("Clicking the first job");
             const openJob = document.querySelector(".tvm__text.tvm__text");
@@ -273,6 +275,7 @@ class GetCandidate extends LinkedinScrapeService_1.default {
             console.log("Clicking the close job button in popup");
             const allButtons = Array.from(document.querySelectorAll(".artdeco-button__text"));
             console.log("===================================");
+            allButtons.map((button) => console.log(button.innerText));
             const closeJobButton = allButtons.find((button) => button.innerText === "Close job post");
             console.log("===================================");
             if (closeJobButton) {
@@ -280,7 +283,7 @@ class GetCandidate extends LinkedinScrapeService_1.default {
                 closeJobButton.click();
             }
         });
-        await delay(2000);
+        await delay(200000);
     }
 }
 exports.default = GetCandidate;
