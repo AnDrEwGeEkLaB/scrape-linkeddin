@@ -192,6 +192,9 @@ export default class GetCandidate extends LinkedInScraperService {
         // Download CV to the local folder
         let cvPath = null;
         let fileName = null;
+        await delay(5000);
+        await this.page.reload();
+        await delay(5000);
         try {
           const cvDownloadElement = await this.page.$(
             ".display-flex.justify-space-between.align-items-flex-start.pl5.pr5.pt5.pb3 a"
@@ -231,7 +234,7 @@ export default class GetCandidate extends LinkedInScraperService {
             profileLink,
             email,
             phone,
-            cvPath: "https://machine-genius.s3.amazonaws.com/cv/" + fileName,
+            cvPath: `https://machine-genius.s3.amazonaws.com/cv/${email}.pdf`, 
           });
         }
 
