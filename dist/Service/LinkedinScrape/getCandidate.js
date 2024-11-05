@@ -94,7 +94,7 @@ class GetCandidate extends LinkedinScrapeService_1.default {
             }
         });
         console.log("Enter inside first job");
-        await delay(5000);
+        await delay(10000);
         await this.page.evaluate(() => {
             console.log("Clicking the View applicants button");
             const clickJob = Array.from(document.querySelectorAll(".hiring-job-top-card__job-action button"));
@@ -252,6 +252,10 @@ class GetCandidate extends LinkedinScrapeService_1.default {
     async closeJob() {
         if (!this.page)
             throw new Error("Browser has not been launched.");
+        await this.page.goto("https://www.linkedin.com/my-items/posted-jobs/", {
+            waitUntil: "domcontentloaded",
+        });
+        await delay(10000);
         await this.page.evaluate(() => {
             console.log("Clicking the first job");
             const openJob = Array.from(document.querySelectorAll(".workflow-results-container ul li a.app-aware-link"));

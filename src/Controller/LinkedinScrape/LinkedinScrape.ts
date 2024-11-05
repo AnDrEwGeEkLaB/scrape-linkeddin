@@ -162,16 +162,15 @@ export default class LinkedinScrapeController {
                 const newCookies = await this.updateAccountCookies(account_id, getAccountCookies.email, getAccountCookies.password);
                 await this.linkedinScrapeService.loadCookies(newCookies);
             }
-            const result = await this.linkedinScrapeService.getJobStatus();
-            if (result === "Paused") {
-                await this.linkedinScrapeService.closeJob();
-                const timeStampAfter7Days = new Date().valueOf() + 7 * 24 * 60 * 60 * 1000;
-                await linkedinAccountCookiesService.updateBusyAccount(account_id, true, false, timeStampAfter7Days);
-            }
+
+            await this.linkedinScrapeService.closeJob();
+            const timeStampAfter7Days = new Date().valueOf() + 7 * 24 * 60 * 60 * 1000;
+            await linkedinAccountCookiesService.updateBusyAccount(account_id, true, false, timeStampAfter7Days);
+
             const newCookies = await this.linkedinScrapeService.getCookies();
             await linkedinAccountCookiesService.updateCookies(account_id, newCookies);
             await this.linkedinScrapeService.closeBrowser();
-            return result;
+            return "Job Closed";
         } catch (error) {
             await this.linkedinScrapeService.closeBrowser();
             throw error;
