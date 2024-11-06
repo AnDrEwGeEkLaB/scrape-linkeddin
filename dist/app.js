@@ -22,7 +22,6 @@ wss.on('connection', (ws) => {
         console.log(`WebSocket connection established for client ${clientId}`);
         WhatsappController_1.clients[clientId].client.on('message', async (msg) => {
             ws.send(JSON.stringify({ from: msg.from, body: msg.body }));
-            await (0, WhatsappController_1.getCandidateTask)(msg.from, msg.body);
         });
         WhatsappController_1.clients[clientId].client.on('qr', (qr) => {
             ws.send(JSON.stringify({ body: qr }));

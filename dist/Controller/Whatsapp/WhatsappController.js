@@ -3,11 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCandidateTask = exports.clients = exports.initializeClient = void 0;
+exports.clients = exports.initializeClient = void 0;
 const whatsappService_1 = __importDefault(require("../../Service/Whatsapp/whatsappService"));
 const CandidateService_1 = __importDefault(require("../../Service/CandidateService/CandidateService"));
 const utils_1 = require("../../utils");
-const axios_1 = __importDefault(require("axios"));
 class WhatsAppController {
     constructor(session) {
         this.session = session;
@@ -52,27 +51,3 @@ const initializeClient = (clientId) => {
     }
 };
 exports.initializeClient = initializeClient;
-const getCandidateTask = async (number, msg) => {
-    const phoneNumber = `+${number.split('@')[0]}`;
-    const candidate = await CandidateService_1.default.getCandidateByPhoneNumber(phoneNumber);
-    console.log(candidate);
-    if (!candidate)
-        return;
-    const regex = /https:\/\/[^\s]+/g;
-    const taskUrl = msg.match(regex)?.join(' , ');
-    if (!taskUrl)
-        return;
-    const data = {
-        email: candidate.email,
-        taskUrl: taskUrl.toString()
-    };
-    console.log(data);
-    const result = await axios_1.default.post('https://api-development.machinegenius.io/un-authorized/candidate', data, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    console.log(result.data);
-    return;
-};
-exports.getCandidateTask = getCandidateTask;

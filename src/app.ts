@@ -3,7 +3,7 @@ import cors from "cors";
 import WebSocket, { WebSocketServer } from 'ws';
 
 import LinkedinRouter from "./Router/LinkedinRouter";
-import { clients, getCandidateTask, initializeClient } from "./Controller/Whatsapp/WhatsappController";
+import { clients, initializeClient } from "./Controller/Whatsapp/WhatsappController";
 import WhatsappRouter from "./Router/WhatsappRouter";
 const app: Application = express();
 
@@ -16,7 +16,6 @@ wss.on('connection', (ws: WebSocket) => {
         console.log(`WebSocket connection established for client ${clientId}`);
         clients[clientId].client.on('message', async (msg: { from: string; body: string }) => {
             ws.send(JSON.stringify({ from: msg.from, body: msg.body }));
-            await getCandidateTask(msg.from, msg.body);
         });
         clients[clientId].client.on('qr', (qr: string) => {
             ws.send(JSON.stringify({ body: qr }));
