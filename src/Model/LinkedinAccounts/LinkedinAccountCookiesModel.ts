@@ -14,6 +14,6 @@ const LinkedinAccountCookiesSchema = new Schema<ILinkedinAccountCookiesModel>({
 
 });
 
-const LinkedinAccountCookiesModel = model<ILinkedinAccountCookiesModel>("LinkedinAccountCookies", LinkedinAccountCookiesSchema);
+const LinkedinAccountCookiesModel = model<ILinkedinAccountCookiesModel>("linkedin-account-cookies", LinkedinAccountCookiesSchema);
 
 export default LinkedinAccountCookiesModel;
