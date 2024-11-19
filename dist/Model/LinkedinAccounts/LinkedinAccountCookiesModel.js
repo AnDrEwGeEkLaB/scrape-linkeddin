@@ -13,5 +13,5 @@ const LinkedinAccountCookiesSchema = new mongoose_1.Schema({
     getCandidate: { type: Boolean, default: false },
     updatedAt: { type: Number }
 });
-const LinkedinAccountCookiesModel = (0, mongoose_1.model)("LinkedinAccountCookies", LinkedinAccountCookiesSchema);
+const LinkedinAccountCookiesModel = (0, mongoose_1.model)("linkedin-account-cookie", LinkedinAccountCookiesSchema);
 exports.default = LinkedinAccountCookiesModel;
