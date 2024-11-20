@@ -59,7 +59,7 @@ export default class GetCandidate extends LinkedInScraperService {
       console.log("Clicking the first job");
       const openJob = Array.from(
         document.querySelectorAll(
-          ".workflow-results-container ul li a.app-aware-link"
+          ".workflow-results-container ul li span a"
         )
       );
       if (openJob.length > 0) {
@@ -68,7 +68,7 @@ export default class GetCandidate extends LinkedInScraperService {
           openJob[0].innerText,
           openJob[1].innerText
         );
-        openJob[1].click();
+        openJob[0].click();
       } else {
         console.log("No job found");
       }
@@ -276,7 +276,7 @@ export default class GetCandidate extends LinkedInScraperService {
       console.log("Clicking the first job");
       const openJob = Array.from(
         document.querySelectorAll(
-          ".workflow-results-container ul li a.app-aware-link"
+          ".workflow-results-container ul li span a"
         )
       );
       if (openJob.length > 0) {
@@ -285,7 +285,7 @@ export default class GetCandidate extends LinkedInScraperService {
           openJob[0].innerText,
           openJob[1].innerText
         );
-        openJob[1].click();
+        openJob[0].click();
       } else {
         console.log("No job found");
       }
