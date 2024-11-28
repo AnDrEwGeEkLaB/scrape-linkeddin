@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { app, wss } from "./app";
+import { app } from "./app";
 import { DBConnection } from "./DbSetup/DbConfig";
 
 const port = process.env.PORT || 4000;
@@ -11,12 +11,5 @@ const server = app.listen(port, async () => {
         console.log(error);
     }
 });
-
-server.on('upgrade', (request, socket, head) => {
-    wss.handleUpgrade(request, socket, head, (socket: any) => {
-        wss.emit('connection', socket, request);
-    });
-});
-
 
 export default app;

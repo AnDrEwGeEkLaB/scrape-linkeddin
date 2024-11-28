@@ -1,7 +1,6 @@
 import { Cookie } from "puppeteer";
 import ILinkedinAccountCookiesModel from "../../Model/LinkedinAccounts/ILinkedinAccountCookiesModel";
 import LinkedinAccountCookiesService from "../../Service/LinkedinAccountCookies/LinkedinAccountCookiesService";
-import LinkedInScraperService from "../../Service/LinkedinScrape/LinkedinScrapeService";
 import GetCandidate from "../../Service/LinkedinScrape/getCandidate";
 
 export default class LinkedinScrapeController {
