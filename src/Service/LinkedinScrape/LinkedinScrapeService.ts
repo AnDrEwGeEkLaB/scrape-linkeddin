@@ -308,7 +308,16 @@ export default class LinkedInScraperService {
         await this.page.click(`.artdeco-button.artdeco-button--2.artdeco-button--primary.ember-view[data-validate-submit-type="Next"]`);
         ////Final 
         await delay(4000);
-        await this.page.click(".job-posting-footer__secondary-cta.artdeco-button.artdeco-button--muted.artdeco-button--2.artdeco-button--secondary.ember-view")
+        //await this.page.click(".artdeco-button.artdeco-button--3.artdeco-button--secondary.ember-view order-placement__place-order-button")
+        await this.page.evaluate(() => {
+            const buttons = Array.from(document.querySelectorAll("button span"));
+            if (!buttons) return;
+            buttons.forEach((button: Element) => {
+                if ((button as HTMLElement).innerText === "Post without promoting") {
+                    (button as HTMLElement).click();
+                }
+            });
+        });
         console.log("task has been finished");
         const url = this.page.url();
         console.log('Navigated to LinkedIn profile page', url);
